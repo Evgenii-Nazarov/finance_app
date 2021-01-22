@@ -5,8 +5,8 @@ import routes from './src/routes';
 export default defineConfig({
   theme,
   routes,
-  dva:{},
+  dva: {},
   nodeModulesTransform: {
     type: 'none',
-  }
+  },
 });

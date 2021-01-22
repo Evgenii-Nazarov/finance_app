@@ -1,9 +1,12 @@
 import React from 'react';
-import {Link} from 'umi';
-import {get} from 'lodash';
-import {Layout, Menu} from 'antd';
-
+import { Link } from 'umi';
+import { get } from 'lodash';
+import { Affix, Button, Layout, Menu } from 'antd';
+import '@/styles.css';
 const { Header, Content, Footer } = Layout;
+import { DownloadOutlined } from '@ant-design/icons';
+import MyHeader from '@/pages/PageElements/MyHeader';
+import DrawerCustom from '@/pages/utils/DrawerCustom/DrawerCustom';
 
 interface IProps {
   children: any;
@@ -31,21 +34,11 @@ export default (props: IProps) => {
       {/*  </div>*/}
       {/*</nav>*/}
 
-      <Header>
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-          <Menu.Item key="1">nav 1</Menu.Item>
-          <Menu.Item key="2">nav 2</Menu.Item>
-          <Menu.Item key="3">nav 3</Menu.Item>
-        </Menu>
-      </Header>
+      <MyHeader />
 
-      <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
-          {props.children}
-        </div>
+      <Content className="container mt-4" style={{ padding: '0 50px' }}>
+        <div className="site-layout-content">{props.children}</div>
       </Content>
-
 
       {/*<div className="container mt-4">*/}
       {/*    {props.children}*/}
@@ -54,7 +47,6 @@ export default (props: IProps) => {
       {/*<Footer style={{ textAlign: 'center' }}>*/}
       {/*  Ant Design ©2018 Created by Ant UED*/}
       {/*</Footer>*/}
-
 
       <Footer className="mt-auto mb-15rem small" data-qa="footer">
         <div className="container mt-4">
@@ -71,6 +63,21 @@ export default (props: IProps) => {
           </Link>
         </div>
       </Footer>
+
+      <Affix
+        offsetTop={550}
+        style={{ position: 'absolute', left: '70%', zIndex: 999 }}
+      >
+        <Button
+          shape="round"
+          type="primary"
+          icon={<DownloadOutlined />}
+          size={'large'}
+        >
+          Add
+        </Button>
+      </Affix>
+      <DrawerCustom />
     </Layout>
   );
 };

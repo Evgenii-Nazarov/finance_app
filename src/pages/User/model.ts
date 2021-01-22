@@ -1,7 +1,7 @@
 import { Effect, Reducer } from 'umi';
-import {IUserAccount} from "@/pages/User/types";
+import { IUserAccount } from '@/pages/User/types';
 import { userList } from './demoData';
-import defaultReducers from "@/pages/utils/defaultReducers";
+import defaultReducers from '@/pages/utils/defaultReducers';
 
 export interface IModel {
   namespace: string;
@@ -19,7 +19,7 @@ export interface IModel {
 const UserModel: IModel = {
   namespace: 'User',
 
-  state: userList,
+  state: userList[0],
 
   effects: {
     *setUser({ payload }, { call, put }) {

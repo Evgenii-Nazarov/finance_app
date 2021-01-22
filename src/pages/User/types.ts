@@ -3,12 +3,11 @@ export interface IUserAccount {
   firstName?: string;
   lastName?: string;
   roles?: string[];
-  active?: boolean;
   email?: string;
   createdAt?: string;
   updatedAt?: string;
-  expenseTypes?: IExpenseType[];
-  incomeTypes?: IIncomeType[];
+  // expenseTypes?: IExpenseType[];
+  // incomeTypes?: IIncomeType[];
 }
 
 export interface IExpenseType {
