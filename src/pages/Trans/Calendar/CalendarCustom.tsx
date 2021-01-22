@@ -5,17 +5,30 @@ import moment from 'moment';
 import { Calendar, Badge, Tag, Row, Col } from 'antd';
 import CalendarDays from '@/pages/Trans/Calendar/CalendarDays';
 import { connect } from 'umi';
+import { IUserAccount } from '@/pages/User/types';
+import { ICalendar, ITransaction } from './types';
 
 interface IProps {
-  data: any;
   getTransactions: (ownerId: string) => void;
+  User: IUserAccount;
+  Calendar: ICalendar;
 }
 
 const CalendarCustom = (props: IProps) => {
   const ownerId = get(props, 'User._id', '');
-  console.log(ownerId);
-  function dateCellRender(value: any) {
-    return <CalendarDays />;
+  const transactions = get(props, 'Calendar.transactions', []);
+
+  function dateCellRender(value: Moment) {
+    const allDayTransactions = transactions.filter((el: ITransaction) => {
+      const transactionMoment = moment(el.transactionDate);
+      return (
+        transactionMoment.date() === value.date() &&
+        transactionMoment.month() === value.month() &&
+        transactionMoment.year() === value.year()
+      );
+    });
+
+    return <CalendarDays transactions={allDayTransactions} />;
   }
 
   const onSelect = (date: Moment) => {
@@ -39,6 +52,7 @@ const CalendarCustom = (props: IProps) => {
 const mapStateToProps = (state: any) => ({
   DrawerData: state.Drawer,
   User: state.User,
+  Calendar: state.Calendar,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -21,14 +21,12 @@ export interface IModel {
 const Model: IModel = {
   namespace: 'Calendar',
 
-  state: {
-    open: false,
-  },
+  state: {},
 
   effects: {
     *getTransactions({ payload }, { call, put }) {
       const data = yield call(queryGetTransactions, payload);
-      console.log(data);
+      yield put({ type: 'save', payload: { transactions: data } });
     },
 
     *close(_, { put }) {
