@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input, Radio } from 'antd';
+import { Button, Form, InputNumber, Radio } from 'antd';
+
 type SizeType = Parameters<typeof Form>[0]['size'];
 
 const layout = {
@@ -19,7 +20,7 @@ interface IProps {
   transactionType: string;
 }
 
-const ExpenseForm = (props: IProps) => {
+const IncomeForm = (props: IProps) => {
   const { transactionType } = props;
 
   const onFinish = (values: any) => {
@@ -60,19 +61,18 @@ const ExpenseForm = (props: IProps) => {
         name="transaction"
         rules={[{ required: true, message: 'Please input your username!' }]}
       >
-        <Input />
+        {/*<MyCascader />*/}
       </Form.Item>
 
       <Form.Item
-        label="Pass!!!!!!word"
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
+        label="Income Value"
+        name="value"
+        rules={[
+          { required: true, message: 'Please input income amount!' },
+          { type: 'number', min: 1, message: 'Cannot be less than 1' },
+        ]}
       >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
+        <InputNumber placeholder="" />
       </Form.Item>
 
       <Form.Item {...tailLayout}>
@@ -84,4 +84,4 @@ const ExpenseForm = (props: IProps) => {
   );
 };
 
-export default ExpenseForm;
+export default IncomeForm;

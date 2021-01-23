@@ -1,6 +1,10 @@
 import { Effect, Reducer } from 'umi';
+import { get } from 'lodash';
 import defaultReducers from '@/pages/utils/defaultReducers';
-import { queryGetTransactions } from '@/pages/Trans/Calendar/queries';
+import {
+  queryCreateTransaction,
+  queryGetTransactions,
+} from '@/pages/Trans/Calendar/queries';
 
 export interface IState {}
 
@@ -11,6 +15,7 @@ export interface IModel {
     close: Effect;
     open: Effect;
     getTransactions: Effect;
+    createTransaction: Effect;
   };
   reducers: {
     save: Reducer<IState>;
@@ -27,6 +32,12 @@ const Model: IModel = {
     *getTransactions({ payload }, { call, put }) {
       const data = yield call(queryGetTransactions, payload);
       yield put({ type: 'save', payload: { transactions: data } });
+    },
+
+    *createTransaction({ payload }, { call, put }) {
+      const owner = get(payload, 'owner', '');
+      yield call(queryCreateTransaction, payload);
+      yield put({ type: 'getTransactions', payload: owner });
     },
 
     *close(_, { put }) {

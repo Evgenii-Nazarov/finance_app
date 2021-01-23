@@ -6,20 +6,14 @@ export interface IUserAccount {
   email?: string;
   createdAt?: string;
   updatedAt?: string;
-  // expenseTypes?: IExpenseType[];
+  transactionTypes?: ITransactionType[];
   // incomeTypes?: IIncomeType[];
 }
 
-export interface IExpenseType {
+export interface ITransactionType {
   _id?: string;
+  type?: string;
   name?: string;
   parent?: boolean;
   parentId?: string;
-}
-
-export interface IIncomeType {
-  _id?: string;
-  name?: string;
-  parentId?: string;
-  childrenId?: string;
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Form, Input, Radio } from 'antd';
-import ExpenseForm from '@/pages/Trans/Forms/ExpenseForm';
-import IncomeForm from '@/pages/Trans/Forms/IncomeForm';
+import ExpenseForm from '@/pages/Trans/Forms/AddForm/ExpenseForm';
+import IncomeForm from '@/pages/Trans/Forms/AddForm/IncomeForm';
 
 const AddForm = () => {
   const [transactionType, setTransactionType] = useState('expense');

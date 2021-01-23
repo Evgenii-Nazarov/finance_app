@@ -2,7 +2,7 @@ import { Drawer } from 'antd';
 import React from 'react';
 import { connect } from 'umi';
 import { IDrawer } from '@/pages/utils/DrawerCustom/types';
-import AddForm from '@/pages/Trans/Forms/AddForm';
+import AddForm from '@/pages/Trans/Forms/AddForm/AddForm';
 
 function formMap(form: any) {
   switch (form) {
