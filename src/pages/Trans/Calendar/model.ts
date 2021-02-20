@@ -12,8 +12,6 @@ export interface IModel {
   namespace: string;
   state: IState;
   effects: {
-    close: Effect;
-    open: Effect;
     getTransactions: Effect;
     createTransaction: Effect;
   };
@@ -38,14 +36,6 @@ const Model: IModel = {
       const owner = get(payload, 'owner', '');
       yield call(queryCreateTransaction, payload);
       yield put({ type: 'getTransactions', payload: owner });
-    },
-
-    *close(_, { put }) {
-      yield put({ type: 'reset' });
-    },
-
-    *open({ payload }, { put }) {
-      yield put({ type: 'save', payload: { open: true, ...payload } });
     },
   },
 

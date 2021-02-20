@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Moment } from 'moment';
 import { ITransaction } from '@/pages/Trans/Calendar/types';
 import { get } from 'lodash';
+import { Button, Modal } from 'antd';
+import { IDrawer } from '@/pages/utils/DrawerCustom/types';
+import { connect, withRouter } from 'umi';
+import CalendarModal from '@/pages/Trans/Calendar/CalendarModal/CalendarModal';
 
 interface IProps {
   transactions: ITransaction[];
 }
 
-const CalendarDays = (props: IProps) => {
+const CalendarDay = (props: IProps) => {
   const { transactions = [] } = props;
 
   const transactionsExpenses = transactions.filter(
@@ -27,11 +31,15 @@ const CalendarDays = (props: IProps) => {
   );
 
   return (
-    <div className="calendar-cell ">
+    <div className="calendar-cell">
       <p className="my-red my-text-center">{`-${totalExpenses}`}</p>
       <p className="my-green my-text-center">{`+${totalIncome}`}</p>
     </div>
   );
 };
 
-export default CalendarDays;
+const mapDispatchToProps = (dispatch: any) => ({
+  open: (payload: IDrawer) => dispatch({ type: 'Drawer/open', payload }),
+});
+
+export default connect(null, mapDispatchToProps)(CalendarDay);

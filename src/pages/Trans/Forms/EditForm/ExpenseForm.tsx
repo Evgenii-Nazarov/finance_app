@@ -3,8 +3,10 @@ import { Button, DatePicker, Form, Input, InputNumber, Radio } from 'antd';
 import { connect } from 'umi';
 import { get as getl, get } from 'lodash';
 import { ICreateTransaction, IExpenseForm } from '../types';
-import MyCascader from '@/pages/Trans/Forms/AddForm/MyCascader';
+import MyCascader from '@/pages/Trans/Forms/EditForm/MyCascader';
 import { ITransactionType, IUserAccount } from '@/pages/User/types';
+import { ITransaction } from '@/pages/Trans/Calendar/types';
+import moment from 'moment';
 
 export const validator = {
   require: {
@@ -23,18 +25,38 @@ const tailLayout = {
 };
 
 interface IProps {
-  User: IUserAccount;
   changeType: (arg: string) => void;
   createTransactions: (arg: ICreateTransaction) => void;
+  userTransactionTypes: ITransactionType[];
   transactionType: string;
-  defaultDate: string;
+  owner: string;
+  defaultValues: ITransaction;
 }
 
 const ExpenseForm = (props: IProps) => {
   const transactionType = get(props, 'transactionType', '');
-  const defaultDate = get(props, 'defaultDate', '');
-  const userTransactionTypes = get(props, 'User.transactionTypes', []);
-  const owner = get(props, 'User._id', []);
+  const initialValues = get(props, 'defaultValues', {});
+  const userTransactionTypes = get(props, 'userTransactionTypes', []);
+  const owner = get(props, 'props.owner', []);
+  const initialCategoryId = get(initialValues, 'transactionTypeId');
+
+  const initialDate = get(initialValues, 'transactionDate');
+  const initialDateMoment = moment(initialDate);
+
+  let initialCategoryArray = [initialCategoryId];
+  const initialCategory =
+    userTransactionTypes.find(
+      (el: ITransactionType) => el._id === initialCategoryId,
+    ) || {};
+
+  if (initialCategory.parentId) {
+    const initialParentCategory =
+      userTransactionTypes.find(
+        (el: ITransactionType) => el._id === initialCategory.parentId,
+      ) || {};
+    initialCategoryArray.unshift(initialParentCategory._id);
+  }
+
   const [form] = Form.useForm();
 
   const expenseTransactionTypes = userTransactionTypes.filter(
@@ -45,25 +67,29 @@ const ExpenseForm = (props: IProps) => {
     const transactionDateMoment = getl(values, 'transactionDate');
     const transactionDateString = transactionDateMoment.format();
 
-    props.createTransactions({
-      ...values,
-      transactionDate: transactionDateString,
-      owner,
-    });
+    console.log(values);
+
+    // props.createTransactions({
+    //   ...values,
+    //   transactionDate: transactionDateString,
+    //   owner,
+    // });
   };
 
   useEffect(() => {
-    form.setFieldsValue({ value: 100 });
+    // form.setFieldsValue({ value: 100 });
   }, []);
-
-  console.log(defaultDate);
 
   return (
     <Form
       {...layout}
       form={form}
       name="basic"
-      initialValues={{ transactionType, transactionDate: defaultDate }}
+      initialValues={{
+        transactionType,
+        ...initialValues,
+        transactionDate: initialDateMoment,
+      }}
       onFinish={onFinish}
     >
       <Form.Item
@@ -103,6 +129,7 @@ const ExpenseForm = (props: IProps) => {
         <MyCascader
           form={form}
           expenseTransactionTypes={expenseTransactionTypes}
+          initialValues={initialCategoryArray}
         />
       </Form.Item>
 
@@ -123,20 +150,16 @@ const ExpenseForm = (props: IProps) => {
 
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
-          Create
+          Save
         </Button>
       </Form.Item>
     </Form>
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  User: state.User,
-});
-
 const mapDispatchToProps = (dispatch: any) => ({
   createTransactions: (payload: ICreateTransaction) =>
     dispatch({ type: 'Calendar/createTransaction', payload }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
+export default connect(null, mapDispatchToProps)(ExpenseForm);

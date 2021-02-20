@@ -3,11 +3,15 @@ import React from 'react';
 import { connect } from 'umi';
 import { IDrawer } from '@/pages/utils/DrawerCustom/types';
 import AddForm from '@/pages/Trans/Forms/AddForm/AddForm';
+import EditForm from '@/pages/Trans/Forms/EditForm/EditForm';
 
 function formMap(form: any) {
   switch (form) {
     case 'AddForm':
       return <AddForm />;
+
+    case 'EditForm':
+      return <EditForm />;
 
     default:
       return null;
@@ -26,6 +30,7 @@ const DrawerCustom = (props: IProps) => {
 
   return (
     <Drawer
+      // style={{zIndex:999}}
       title={title}
       placement="right"
       closable={false}

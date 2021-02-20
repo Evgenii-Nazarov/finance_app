@@ -1,63 +1,93 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
-import { Moment } from 'moment';
-import moment from 'moment';
-import { Calendar, Badge, Tag, Row, Col } from 'antd';
-import CalendarDays from '@/pages/Trans/Calendar/CalendarDays';
+import moment, { Moment } from 'moment';
+import { Calendar } from 'antd';
+import CalendarDay from '@/pages/Trans/Calendar/CalendarDay';
 import { connect } from 'umi';
 import { IUserAccount } from '@/pages/User/types';
 import { ICalendar, ITransaction } from './types';
+import CalendarModal from '@/pages/Trans/Calendar/CalendarModal/CalendarModal';
+import { IDrawer } from '@/pages/utils/DrawerCustom/types';
+import { IModal } from '../Forms/types';
 
 interface IProps {
   getTransactions: (ownerId: string) => void;
   User: IUserAccount;
   Calendar: ICalendar;
+  open: (arg: IDrawer) => void;
 }
 
 const CalendarCustom = (props: IProps) => {
   const ownerId = get(props, 'User._id', '');
   const transactions = get(props, 'Calendar.transactions', []);
 
-  function dateCellRender(value: Moment) {
-    const allDayTransactions = transactions.filter((el: ITransaction) => {
+  console.log(transactions);
+
+  const [modalState, setModalState] = useState<IModal>({ isOpen: false });
+
+  const filterTransactionsForDay = (day: Moment) => {
+    return transactions.filter((el: ITransaction) => {
       const transactionMoment = moment(el.transactionDate);
       return (
-        transactionMoment.date() === value.date() &&
-        transactionMoment.month() === value.month() &&
-        transactionMoment.year() === value.year()
+        transactionMoment.date() === day.date() &&
+        transactionMoment.month() === day.month() &&
+        transactionMoment.year() === day.year()
       );
     });
+  };
 
-    return <CalendarDays transactions={allDayTransactions} />;
+  function dateCellRender(value: Moment) {
+    const allDayTransactions = filterTransactionsForDay(value);
+
+    return <CalendarDay transactions={allDayTransactions} />;
   }
 
   const onSelect = (date: Moment) => {
-    console.log(moment('2020-01-17T06:48:16.965+00:00').format('LL'));
+    const allDayTransactions = filterTransactionsForDay(date);
+
+    setModalState({
+      isOpen: true,
+      date: date,
+      transactions: allDayTransactions,
+    });
   };
 
   useEffect(() => {
     props.getTransactions(ownerId);
   }, []);
 
+  const changeModalState = () => {
+    setModalState({ isOpen: false });
+  };
+
   return (
-    <Calendar
-      fullscreen={true}
-      className="my-calendar"
-      dateCellRender={dateCellRender}
-      onSelect={onSelect}
-    />
+    <>
+      <Calendar
+        fullscreen={true}
+        className="my-calendar"
+        dateCellRender={dateCellRender}
+        onSelect={onSelect}
+      />
+      <CalendarModal
+        onFinish={props.open}
+        modalState={modalState}
+        onClose={changeModalState}
+      />
+    </>
   );
 };
 
 const mapStateToProps = (state: any) => ({
   DrawerData: state.Drawer,
   User: state.User,
+
   Calendar: state.Calendar,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getTransactions: (payload: string) =>
     dispatch({ type: 'Calendar/getTransactions', payload }),
+  open: (payload: IDrawer) => dispatch({ type: 'Drawer/open', payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarCustom);

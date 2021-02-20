@@ -4,7 +4,6 @@ import { get } from 'lodash';
 import { Affix, Button, Layout, Menu } from 'antd';
 import '@/styles.css';
 const { Header, Content, Footer } = Layout;
-import { DownloadOutlined } from '@ant-design/icons';
 import MyHeader from '@/pages/PageElements/MyHeader';
 import DrawerCustom from '@/pages/utils/DrawerCustom/DrawerCustom';
 
@@ -49,34 +48,8 @@ export default (props: IProps) => {
       {/*</Footer>*/}
 
       <Footer className="mt-auto mb-15rem small" data-qa="footer">
-        <div className="container mt-4">
-          If you have any questions or concerns, please{' '}
-          <Link to="/contact" data-qa="footerContactUs">
-            contact us.
-          </Link>{' '}
-          <br />
-          <Link to={'/terms'} className="mr-4" data-qa="footerTerms">
-            Terms of Service
-          </Link>{' '}
-          <Link to={'/privacy'} data-qa="footerPrivacy">
-            Privacy Policy
-          </Link>
-        </div>
+        FOOTER
       </Footer>
-
-      <Affix
-        offsetTop={550}
-        style={{ position: 'absolute', left: '70%', zIndex: 999 }}
-      >
-        <Button
-          shape="round"
-          type="primary"
-          icon={<DownloadOutlined />}
-          size={'large'}
-        >
-          Add
-        </Button>
-      </Affix>
       <DrawerCustom />
     </Layout>
   );

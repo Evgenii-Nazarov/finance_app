@@ -1,3 +1,5 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 .site-layout-content {
   min-height: 280px;
   padding: 24px;
@@ -31,4 +33,24 @@ p {
 
 .my-text-center {
   text-align:end
+}
+
+.income-color {
+  color:#5DADE2
+}
+
+.expense-color {
+  color: red;
+}
+
+.transaction-border-bottom{
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 0 0 2px 2px;
+}
+
+.parent-color {
+  color:#636363;
+  /*font-variant: small-caps;*/
+  font-weight: 700;
+  font-size: 70%;
 }

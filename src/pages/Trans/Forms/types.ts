@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { ITransaction } from '@/pages/Trans/Calendar/types';
 
 export interface IExpenseForm {
   name: string;
@@ -15,4 +16,10 @@ export interface ICreateTransaction {
   transactionTypeId: string;
   value: number;
   owner: string;
+}
+
+export interface IModal {
+  isOpen: boolean;
+  date?: Moment;
+  transactions?: ITransaction[];
 }

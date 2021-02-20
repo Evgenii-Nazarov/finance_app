@@ -1,45 +1,73 @@
-import React from 'react';
-import { Button, Form, InputNumber, Radio } from 'antd';
+import React, { useEffect } from 'react';
+import { Button, DatePicker, Form, Input, InputNumber, Radio } from 'antd';
+import { connect } from 'umi';
+import { get as getl, get } from 'lodash';
+import { ICreateTransaction, IExpenseForm } from '../types';
+import MyCascader from '@/pages/Trans/Forms/AddForm/MyCascader';
+import { ITransactionType, IUserAccount } from '@/pages/User/types';
 
-type SizeType = Parameters<typeof Form>[0]['size'];
+export const validator = {
+  require: {
+    required: true,
+    message: 'Required',
+  },
+};
 
 const layout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 16 },
 };
+
 const tailLayout = {
   wrapperCol: { offset: 1, span: 16 },
 };
 
-interface IForm {
-  transactionType: SizeType;
-}
-
 interface IProps {
+  User: IUserAccount;
   changeType: (arg: string) => void;
+  createTransactions: (arg: ICreateTransaction) => void;
   transactionType: string;
+  defaultDate: string;
 }
 
 const IncomeForm = (props: IProps) => {
-  const { transactionType } = props;
+  const transactionType = get(props, 'transactionType', '');
+  const userTransactionTypes = get(props, 'User.transactionTypes', []);
+  const owner = get(props, 'User._id', []);
+  const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const expenseTransactionTypes = userTransactionTypes.filter(
+    (el: ITransactionType) => el.type === 'income',
+  );
+
+  const onFinish = (values: IExpenseForm) => {
+    const transactionDateMoment = getl(values, 'transactionDate');
+    const transactionDateString = transactionDateMoment.format();
+
+    props.createTransactions({
+      ...values,
+      transactionDate: transactionDateString,
+      owner,
+    });
   };
 
-  const onFormChange = (values: IForm) => {
-    const { transactionType } = values;
-  };
+  useEffect(() => {
+    form.setFieldsValue({ value: 100 });
+  }, []);
 
   return (
     <Form
       {...layout}
+      form={form}
       name="basic"
       initialValues={{ transactionType }}
-      onValuesChange={onFormChange}
       onFinish={onFinish}
     >
-      <Form.Item label="Type" name="transactionType">
+      <Form.Item
+        label="Type"
+        name="transactionType"
+        rules={[validator.require]}
+      >
         <Radio.Group>
           <Radio.Button
             value="expense"
@@ -57,31 +85,55 @@ const IncomeForm = (props: IProps) => {
       </Form.Item>
 
       <Form.Item
-        label="transaction"
-        name="transaction"
-        rules={[{ required: true, message: 'Please input your username!' }]}
+        label="Date:"
+        name="transactionDate"
+        rules={[validator.require]}
       >
-        {/*<MyCascader />*/}
+        <DatePicker />
       </Form.Item>
 
       <Form.Item
-        label="Income Value"
+        label="Category:"
+        name="transactionTypeId"
+        rules={[validator.require]}
+      >
+        <MyCascader
+          form={form}
+          expenseTransactionTypes={expenseTransactionTypes}
+        />
+      </Form.Item>
+
+      <Form.Item label="Title:" name="name" rules={[validator.require]}>
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Amount"
         name="value"
         rules={[
-          { required: true, message: 'Please input income amount!' },
-          { type: 'number', min: 1, message: 'Cannot be less than 1' },
+          validator.require,
+          { type: 'number', message: 'Numbers only!' },
         ]}
       >
-        <InputNumber placeholder="" />
+        <InputNumber min={1} max={9999999} />
       </Form.Item>
 
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
-          Submit
+          Create
         </Button>
       </Form.Item>
     </Form>
   );
 };
 
-export default IncomeForm;
+const mapStateToProps = (state: any) => ({
+  User: state.User,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  createTransactions: (payload: ICreateTransaction) =>
+    dispatch({ type: 'Calendar/createTransaction', payload }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(IncomeForm);
