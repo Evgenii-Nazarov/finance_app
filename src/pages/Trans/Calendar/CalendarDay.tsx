@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import { Moment } from 'moment';
+import React from 'react';
 import { ITransaction } from '@/pages/Trans/Calendar/types';
-import { get } from 'lodash';
-import { Button, Modal } from 'antd';
 import { IDrawer } from '@/pages/utils/DrawerCustom/types';
-import { connect, withRouter } from 'umi';
-import CalendarModal from '@/pages/Trans/Calendar/CalendarModal/CalendarModal';
+import { connect } from 'umi';
 
 interface IProps {
   transactions: ITransaction[];
