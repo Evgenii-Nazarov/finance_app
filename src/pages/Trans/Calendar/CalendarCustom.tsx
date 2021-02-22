@@ -21,8 +21,6 @@ const CalendarCustom = (props: IProps) => {
   const ownerId = get(props, 'User._id', '');
   const transactions = get(props, 'Calendar.transactions', []);
 
-  console.log(transactions);
-
   const [modalState, setModalState] = useState<IModal>({ isOpen: false });
 
   const filterTransactionsForDay = (day: Moment) => {
