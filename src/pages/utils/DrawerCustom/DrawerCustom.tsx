@@ -30,7 +30,6 @@ const DrawerCustom = (props: IProps) => {
 
   return (
     <Drawer
-      // style={{zIndex:999}}
       title={title}
       placement="right"
       closable={false}
