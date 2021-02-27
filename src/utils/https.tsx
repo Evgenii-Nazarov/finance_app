@@ -3,7 +3,6 @@ import { get as getl } from 'lodash';
 import { notification } from 'antd';
 
 const server = 'http://localhost:5000';
-console.log(server);
 
 interface IHttp {
   method?: 'get' | 'post' | 'patch' | 'delete';
