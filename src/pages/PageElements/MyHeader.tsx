@@ -11,8 +11,6 @@ interface IProps {
 }
 
 const MyHeader = (props: IProps) => {
-  const location = get(props, 'location.pathname', '');
-
   useEffect(() => {}, []);
 
   const addNew = () => {
@@ -29,7 +27,6 @@ const MyHeader = (props: IProps) => {
     <Affix
       offsetTop={0}
       style={{
-        // position: 'absolute', left: '80%',
         zIndex: 999,
       }}
     >
@@ -38,7 +35,6 @@ const MyHeader = (props: IProps) => {
         <Row justify="space-between">
           <Col span={16}>
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-              {/*<Menu.Item onClick={addNew}>Add new</Menu.Item>*/}
               <Menu.Item key="2">Transactions</Menu.Item>
               <Menu.Item key="3">Stats</Menu.Item>
               <Menu.Item key="4">About</Menu.Item>
