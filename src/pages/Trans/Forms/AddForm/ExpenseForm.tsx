@@ -56,8 +56,6 @@ const ExpenseForm = (props: IProps) => {
     form.setFieldsValue({ value: 100 });
   }, []);
 
-  console.log(defaultDate);
-
   return (
     <Form
       {...layout}
