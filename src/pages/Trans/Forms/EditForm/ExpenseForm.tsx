@@ -67,8 +67,6 @@ const ExpenseForm = (props: IProps) => {
     const transactionDateMoment = getl(values, 'transactionDate');
     const transactionDateString = transactionDateMoment.format();
 
-    console.log(values);
-
     // props.createTransactions({
     //   ...values,
     //   transactionDate: transactionDateString,
