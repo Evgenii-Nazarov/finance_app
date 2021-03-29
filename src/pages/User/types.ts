@@ -7,7 +7,6 @@ export interface IUserAccount {
   createdAt?: string;
   updatedAt?: string;
   transactionTypes?: ITransactionType[];
-  // incomeTypes?: IIncomeType[];
 }
 
 export interface ITransactionType {
