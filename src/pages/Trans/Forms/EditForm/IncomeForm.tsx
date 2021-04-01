@@ -83,7 +83,6 @@ const IncomeForm = (props: IProps) => {
   };
 
   const expenseButtonHandler = () => {
-    console.log('income->expense');
     form.setFieldsValue({ value: 100 });
     props.changeType('expense');
   };
